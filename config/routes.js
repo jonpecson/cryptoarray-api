@@ -66,5 +66,9 @@ module.exports.routes = {
     'POST /register/user': 'UserController.register',
     'POST /login/user': 'UserController.login',
 
+    // Bitcoin
+    'GET /bitcoin/price': 'BitcoinController.price',
+    'GET /bitcoin/profit': 'BitcoinController.profit'
+
 
 };

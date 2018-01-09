@@ -28,19 +28,19 @@ module.exports.policies = {
 
     '*': true,
 
-    '*': ['isAuthorized'],
+    // '*': ['isAuthorized'],
 
-    'CustomerController': {
-        'register': true,
-        'activate': ['isAuthorized'],
-        'login': true,
-    },
+    // 'CustomerController': {
+    //     'register': true,
+    //     'activate': ['isAuthorized'],
+    //     'login': true,
+    // },
 
-    'UserController': {
-        'register': true,
-        // 'activate': ['isAuthorized'],
-        'login': true,
-    },
+    // 'UserController': {
+    //     'register': true,
+    //     // 'activate': ['isAuthorized'],
+    //     'login': true,
+    // },
 
 
 

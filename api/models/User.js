@@ -13,6 +13,8 @@ module.exports = {
 
     attributes: {
 
+
+
         //Personal Information
 
         first_name: {
@@ -109,11 +111,6 @@ module.exports = {
         // Add a reference to Role
         role: {
             model: 'role'
-        },
-
-        // Add a reference to Branch
-        branch: {
-            model: 'branch'
         },
 
 

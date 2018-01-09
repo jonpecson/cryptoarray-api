@@ -37,9 +37,6 @@ module.exports = {
             required: true
         },
 
-        company: {
-            model: 'company'
-        },
 
         account_type: {
             type: 'string', // Personal or Business

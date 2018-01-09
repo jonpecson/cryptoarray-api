@@ -88,7 +88,6 @@ module.exports = {
             email: data.email,
             password: password,
             // Add a reference to company
-            company: data.company,
             activated: false
         }).then(function(customer) {
             // Generate JWT
@@ -220,8 +219,6 @@ module.exports = {
             // Add a reference to Role
             role: data.role,
 
-            // Add a reference to Branch
-            branch: data.branch,
 
             // Account Information
             username: data.username,

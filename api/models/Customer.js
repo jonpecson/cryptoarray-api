@@ -157,10 +157,6 @@ module.exports = {
             via: 'customer'
         },
 
-        // 1 owner can have many company
-        company: {
-            model: 'company',
-        },
 
         // Account Information
         email: {

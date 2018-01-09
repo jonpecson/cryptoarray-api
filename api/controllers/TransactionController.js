@@ -49,7 +49,6 @@ module.exports = {
           description: req.body.description,
           effective_date: req.body.effective_date,
           account_type: req.body.account_type,
-          company: req.body.company
         }
 
         // 5. Create Transaction
@@ -123,7 +122,6 @@ module.exports = {
             description: req.body.description,
             effective_date: req.body.effective_date,
             account_type: req.body.account_type,
-            company: req.body.company
           }
 
           // 5. Create Transaction
