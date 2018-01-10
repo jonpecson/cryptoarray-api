@@ -123,6 +123,12 @@ module.exports = {
 
     },
 
+    coinwarz: function(req, res) {
+        request('http://www.coinwarz.com/v1/api/profitability?apikey=d8662c8fde494723a8004b1afdbb5222&algo=all', function (error, response, body) {
+            res.send(body);
+        });
+    }
+
 
 
 

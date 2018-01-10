@@ -68,7 +68,9 @@ module.exports.routes = {
 
     // Bitcoin
     'GET /bitcoin/price': 'BitcoinController.price',
-    'GET /bitcoin/profit': 'BitcoinController.profit'
+    'GET /bitcoin/profit': 'BitcoinController.profit',
+    'GET /bitcoin/coinwarz': 'BitcoinController.coinwarz'
+    
 
 
 };
