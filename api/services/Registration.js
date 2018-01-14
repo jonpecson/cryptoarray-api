@@ -51,60 +51,40 @@ module.exports = {
     },
 
     registerCustomer: function(data, context) {
-        var password = generator.generate({
-                length: 8,
-                numbers: true
-            }),
+        var password = data.password,
             email = data.email;
 
         return API.Model(Customer).create({
             // Create Customer
-            first_name: data.first_name,
-            middle_name: data.middle_name,
-            last_name: data.last_name,
-            suffix: data.suffix,
+            name: data.name,
+            birthdate: data.birthdate,
             gender: data.gender,
-            date_of_birth: data.date_of_birth,
-            place_of_birth: data.place_of_birth,
-            civil_status: data.civil_status,
-            citizenship: data.citizenship,
-            mother_first_name: data.mother_first_name,
-            mother_middle_name: data.mother_middle_name,
-            mother_last_name: data.mother_last_name,
-            address: data.address,
-            country: data.country,
+            phone_number: data.phone_number,
+            street_address: data.street_address,
             state: data.state,
             city: data.city,
             zipcode: data.zipcode,
-            telephone: data.telephone,
-            mobile: data.mobile,
-            highest_educational_attainment: data.highest_educational_attainment,
-            company_name: data.company_name,
-            employment_status: data.employment_status,
-            face: data.face,
-            signature: data.signature,
-            photoid: data.photoid,
-            dependents: data.dependents,
             email: data.email,
             password: password,
             // Add a reference to company
-            activated: false
+            activated: true
         }).then(function(customer) {
             // Generate JWT
             context.id = customer.id;
             context.email = customer.email;
             context.type = 'Customer';
             return Token.issue({ id: customer.id })
-        }).then(function(token) {
-            var url = sails.config.security.server.url + sails.config.security.activation.customer + token;
-            // Send Verification Link
-            return sendEmailActivationCode({
-                url: url,
-                subject: 'Please verify your account',
-                email: context.email,
-                message: '<table bgcolor="#f0f0f0" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%"> <tbody> <tr> <td align="center" bgcolor="#f0f0f0" style="background-color:#f0f0f0" valign="top"> <table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" class="m_-3148058551993619661container" width="600"> <tbody> <tr> <td style="background: #92140C;"> <div>&nbsp;</div> </td> </tr> <tr> <td><span class="m_-3148058551993619661sg-image"><img height="48px" src="http://res.cloudinary.com/jonpecson/image/upload/c_scale,w_250/v1503478238/cooptavanza-logo-2_yjouls.png" style="margin:11px 26px;width: 250px;height: 60px;" width="250" class="CToWUd"></span></td> </tr> <tr> <td bgcolor="#ffffff" class="m_-3148058551993619661container-padding" style="background-color:#ffffff;padding-left:30px;padding-right:30px"> <div class="m_-3148058551993619661row m_-3148058551993619661top-padding20, m_-3148058551993619661vero-editable"> <div class="m_-3148058551993619661col-sm-12 m_-3148058551993619661col-md-6"> <p> </p> <p>Welcome to <span class="il">Cooptavanza</span><span class="il"></span>! Before you get started, please confirm your account by clicking the link below.</p>&nbsp; -<center> <p><b>Account Details</b></p> <p>username: <b>' + context.email + '</b></p> <p>password: <b>' + password + '</b></p> </center> <br> <center> <p><a href="' + url + '" rel="nofollow" style="margin: 0px;background-color: #CA1800;border-radius:5px;text-align:center;color:#ffffff;font-size: 17px;font-weight:bold;min-height:20px;padding:9px 15px;text-decoration:none;display:block;width:80%;" text="Confirm account" target="_blank" data-saferedirecturl="https://www.google.com/url?hl=en&amp;q=' + url + '&amp;source=gmail&amp;ust=1503563464888000&amp;usg=AFQjCNHYsTKL50hPBFnawcdRSwkOpQMbnQ">Confirm my account </a></p> </center>&nbsp; <!-- <p>or copy and paste your verification code to verify your account:</p> <center style="font-size:22px">Your Verification Code</center> <center style="font-size:32px;letter-spacing:4px;margin-top:10px"><strong>120604</strong></center> --> <p>&nbsp;</p> <p style="background-color:rgb(255,255,255)">If you believe an unauthorized person accessed your account,<br>please contact <a href="mailto:support@cooptavanza.net" target="_blank">support@<span class="il">cooptavanza</span>.<span class="il">net</span></a>.</p> </div> <div class="m_-3148058551993619661col-sm-12 m_-3148058551993619661col-md-6"> <p>Regards,<br><br>The <span class="il">Cooptavanza</span><span class="il"></span> Team<br><br><a href="http://twitter.com/Cooptavanza" style="word-wrap:break-word;color:#37b9e5;font-weight:normal;text-decoration:underline" target="_blank" data-saferedirecturl="https://www.google.com/url?hl=en&amp;q=http://twitter.com/Cooptavanza&amp;source=gmail&amp;ust=1503563464888000&amp;usg=AFQjCNEONOdZO1pZh3Xw0CUQT5u2R555Yg"><span class="m_-3148058551993619661sg-image"><img alt="Twitter" height="30px;" src="https://ci3.googleusercontent.com/proxy/S3C20xaD3FdqZ5AIIf7u6ZbSfDCxPOlwPhaqMTfhRvHyPYJmgGYBrUB780qDvkqhj5qMUS-oh94=s0-d-e1-ft#http://i61.tinypic.com/29vxthj.png" style="border:none;outline:none;text-decoration:none;height:auto!important" width="30px;" class="CToWUd"></span></a> <a href="http://facebook.com/Cooptavanza-148060245780082" style="word-wrap:break-word;color:#37b9e5;font-weight:normal;text-decoration:underline" target="_blank" data-saferedirecturl="https://www.google.comurl?hl=en&amp;q=http://facebook.com/Cooptavanza-148060245780082&amp;source=gmail&amp;ust=1503563464888000&amp;usg=AFQjCNGGv5SLuh3Mi4CnrA4S_5zoPXChHQ"><span class="m_-3148058551993619661sg-image"><img alt="Facebook" height="30px;" src="https://ci6.googleusercontent.com/proxy/flIB6YbxwoPwtCSWefXl_HHECghkooiVyfuQTGU76YWjS5jduHbo4oULH9Qkf_524mpcAmOsDXQ=s0-d-e1-ft#http://i61.tinypic.com/2s9t11x.png" style="border:none;outline:none;text-decoration:none;height:auto!important" width="30px;" class="CToWUd"></span></a> </p> </div> </div> </td> </tr> <tr> <td></td> </tr> </tbody> </table> <center> <p style="font-size:10px;color:#a3a3a3">© 2017, All rights reserved. Calle Quinta y Manuel Gonzalez, Del Edificio Aitza,Local 1, Santiago Veraguas, Republic of Panama</p> </center> </td> </tr> </tbody> </table>'
-            });
-        });
+        })
+        //.then(function(token) {
+        //     var url = sails.config.security.server.url + sails.config.security.activation.customer + token;
+        //     // Send Verification Link
+        //     return sendEmailActivationCode({
+        //         url: url,
+        //         subject: 'Please verify your account',
+        //         email: context.email,
+        //         message: '<table bgcolor="#f0f0f0" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%"> <tbody> <tr> <td align="center" bgcolor="#f0f0f0" style="background-color:#f0f0f0" valign="top"> <table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" class="m_-3148058551993619661container" width="600"> <tbody> <tr> <td style="background: #92140C;"> <div>&nbsp;</div> </td> </tr> <tr> <td><span class="m_-3148058551993619661sg-image"><img height="48px" src="http://res.cloudinary.com/jonpecson/image/upload/c_scale,w_250/v1503478238/cooptavanza-logo-2_yjouls.png" style="margin:11px 26px;width: 250px;height: 60px;" width="250" class="CToWUd"></span></td> </tr> <tr> <td bgcolor="#ffffff" class="m_-3148058551993619661container-padding" style="background-color:#ffffff;padding-left:30px;padding-right:30px"> <div class="m_-3148058551993619661row m_-3148058551993619661top-padding20, m_-3148058551993619661vero-editable"> <div class="m_-3148058551993619661col-sm-12 m_-3148058551993619661col-md-6"> <p> </p> <p>Welcome to <span class="il">Cooptavanza</span><span class="il"></span>! Before you get started, please confirm your account by clicking the link below.</p>&nbsp; -<center> <p><b>Account Details</b></p> <p>username: <b>' + context.email + '</b></p> <p>password: <b>' + password + '</b></p> </center> <br> <center> <p><a href="' + url + '" rel="nofollow" style="margin: 0px;background-color: #CA1800;border-radius:5px;text-align:center;color:#ffffff;font-size: 17px;font-weight:bold;min-height:20px;padding:9px 15px;text-decoration:none;display:block;width:80%;" text="Confirm account" target="_blank" data-saferedirecturl="https://www.google.com/url?hl=en&amp;q=' + url + '&amp;source=gmail&amp;ust=1503563464888000&amp;usg=AFQjCNHYsTKL50hPBFnawcdRSwkOpQMbnQ">Confirm my account </a></p> </center>&nbsp; <!-- <p>or copy and paste your verification code to verify your account:</p> <center style="font-size:22px">Your Verification Code</center> <center style="font-size:32px;letter-spacing:4px;margin-top:10px"><strong>120604</strong></center> --> <p>&nbsp;</p> <p style="background-color:rgb(255,255,255)">If you believe an unauthorized person accessed your account,<br>please contact <a href="mailto:support@cooptavanza.net" target="_blank">support@<span class="il">cooptavanza</span>.<span class="il">net</span></a>.</p> </div> <div class="m_-3148058551993619661col-sm-12 m_-3148058551993619661col-md-6"> <p>Regards,<br><br>The <span class="il">Cooptavanza</span><span class="il"></span> Team<br><br><a href="http://twitter.com/Cooptavanza" style="word-wrap:break-word;color:#37b9e5;font-weight:normal;text-decoration:underline" target="_blank" data-saferedirecturl="https://www.google.com/url?hl=en&amp;q=http://twitter.com/Cooptavanza&amp;source=gmail&amp;ust=1503563464888000&amp;usg=AFQjCNEONOdZO1pZh3Xw0CUQT5u2R555Yg"><span class="m_-3148058551993619661sg-image"><img alt="Twitter" height="30px;" src="https://ci3.googleusercontent.com/proxy/S3C20xaD3FdqZ5AIIf7u6ZbSfDCxPOlwPhaqMTfhRvHyPYJmgGYBrUB780qDvkqhj5qMUS-oh94=s0-d-e1-ft#http://i61.tinypic.com/29vxthj.png" style="border:none;outline:none;text-decoration:none;height:auto!important" width="30px;" class="CToWUd"></span></a> <a href="http://facebook.com/Cooptavanza-148060245780082" style="word-wrap:break-word;color:#37b9e5;font-weight:normal;text-decoration:underline" target="_blank" data-saferedirecturl="https://www.google.comurl?hl=en&amp;q=http://facebook.com/Cooptavanza-148060245780082&amp;source=gmail&amp;ust=1503563464888000&amp;usg=AFQjCNGGv5SLuh3Mi4CnrA4S_5zoPXChHQ"><span class="m_-3148058551993619661sg-image"><img alt="Facebook" height="30px;" src="https://ci6.googleusercontent.com/proxy/flIB6YbxwoPwtCSWefXl_HHECghkooiVyfuQTGU76YWjS5jduHbo4oULH9Qkf_524mpcAmOsDXQ=s0-d-e1-ft#http://i61.tinypic.com/2s9t11x.png" style="border:none;outline:none;text-decoration:none;height:auto!important" width="30px;" class="CToWUd"></span></a> </p> </div> </div> </td> </tr> <tr> <td></td> </tr> </tbody> </table> <center> <p style="font-size:10px;color:#a3a3a3">© 2017, All rights reserved. Calle Quinta y Manuel Gonzalez, Del Edificio Aitza,Local 1, Santiago Veraguas, Republic of Panama</p> </center> </td> </tr> </tbody> </table>'
+        //     });
+        // });
     },
 
     activateCustomer: function(data, context, req, res) {

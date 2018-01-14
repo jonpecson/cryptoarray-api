@@ -36,23 +36,23 @@ module.exports = {
 
         verifyParams(res, email, password)
 
-        Customer.findOne({ email: email }).then(function(customer) {
-            if (!customer) {
-                return invalidEmailOrPassword(res);
-            } else {
-                // check if customer is already activated
+        // Customer.findOne({ email: email }).then(function(customer) {
+        //     if (!customer) {
+        //         return invalidEmailOrPassword(res);
+        //     } else {
+        //         // check if customer is already activated
 
-                if (customer.activated) {
-                    signInUser(req, res, password, customer)
-                } else {
-                    //Email customer
-                    ResponseService.json(401, res, "Please verify your account to continue.")
-                }
-            }
+        //         if (customer.activated) {
+        //             signInUser(req, res, password, customer)
+        //         } else {
+        //             //Email customer
+        //             ResponseService.json(401, res, "Please verify your account to continue.")
+        //         }
+        //     }
 
-        }).catch(function(err) {
-            return invalidEmailOrPassword(res);
-        })
+        // }).catch(function(err) {
+        //     return invalidEmailOrPassword(res);
+        // })
     },
 
 };

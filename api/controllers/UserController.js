@@ -13,14 +13,14 @@ module.exports = {
 
     login: function(req, res) {
         console.log(req.params.all())
-        var username = req.param('username');
+        var email = req.param('email');
         var password = req.param('password');
 
-        verifyParams(res, username, password)
+        verifyParams(res, email, password)
 
-        User.findOne({ username: username }).then(function(user) {
+        Customer.findOne({ email: email }).then(function(user) {
             if (!user) {
-                return invalidUsernameOrPassword(res);
+                return invalidEmailOrPassword(res);
             } else {
                 // check if customer is already activated
 
@@ -32,7 +32,7 @@ module.exports = {
             }
 
         }).catch(function(err) {
-            return invalidUsernameOrPassword(res);
+            return invalidEmailOrPassword(res);
         })
     },
 
@@ -44,7 +44,7 @@ function signInUser(req, res, password, user) {
     User.comparePassword(password, user).then(
         function(valid) {
             if (!valid) {
-                return this.invalidUsernameOrPassword();
+                return this.invalidEmailOrPassword();
             } else {
                 var responseData = {
                     account_details: user,
@@ -59,13 +59,13 @@ function signInUser(req, res, password, user) {
 };
 
 
-function invalidUsernameOrPassword(res) {
-    return ResponseService.json(401, res, "Invalid username or password")
+function invalidEmailOrPassword(res) {
+    return ResponseService.json(401, res, "Invalid email or password")
 };
 
-function verifyParams(res, username, password) {
-    if (!username || !password) {
-        return ResponseService.json(401, res, "Username and password required")
+function verifyParams(res, email, password) {
+    if (!email || !password) {
+        return ResponseService.json(401, res, "Email and password required")
     }
 };
 

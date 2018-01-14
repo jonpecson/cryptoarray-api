@@ -30,156 +30,55 @@ module.exports = {
             uuidv4: true
         },
 
-        first_name: {
+        email: {
+            type: 'string',
+            required: true,
+            unique: true
+        },
+        password: {
+            type: 'string',
+            minLength: 6,
+            protected: true,
+            required: true,
+            columnName: "encryptedPassword"
+        },
+        name: {
             type: 'string',
             required: true
         },
-        middle_name: {
-            type: 'string'
-        },
-        last_name: {
-            type: 'string',
+        birthdate: {
+            type: 'date',
             required: true
-        },
-        suffix: {
-            type: 'string'
         },
         gender: {
             type: 'string',
             enum: ['Male', 'Female', 'Other'],
             required: true
         },
-        date_of_birth: {
-            type: 'date',
-            required: true
-        },
-        place_of_birth: {
+        phone_number: {
             type: 'string',
             required: true
         },
 
-        civil_status: {
+        street_address: {
             type: 'string',
-            required: true
         },
 
-        citizenship: {
-            type: 'string',
-            required: true
-        },
-
-        // Mother's Information
-        mother_first_name: {
-            type: 'string'
-        },
-        mother_middle_name: {
-            type: 'string'
-        },
-        mother_last_name: {
-            type: 'string'
-        },
-
-        // Billing Information
-        address: {
-            type: 'string',
-            required: true
-        },
-
-        country: {
-            type: 'string',
-            required: true
-        },
         state: {
             type: 'string',
-            required: true
         },
         city: {
             type: 'string',
-            required: true
         },
         zipcode: {
             type: 'string',
-            required: true
         },
-        telephone: {
-            type: 'string',
-            required: true
-        },
-        mobile: {
-            type: 'string',
-            required: true
-        },
-
-
-        // Employment Information
-        highest_educational_attainment: {
-            type: 'string',
-            required: true
-        },
-        company_name: {
-            type: 'string',
-        },
-        employment_status: {
-            type: 'string',
-            enum: ['Part Time', 'Full Time', 'Freelance', 'Contructual'],
-        },
-
-        // KYC
-        face: {
-            type: 'string',
-        },
-
-        signature: {
-            type: 'string',
-        },
-
-
-        photoid: {
-            type: 'string',
-        },
-
-        // Dependents
-        dependents: {
-            type: 'json'
-        },
-
-        // Bank Accounts, Get Only
-        // Add a reference to collection of ccounts
-        accounts: {
-            collection: 'account',
-            via: 'customer'
-        },
-
-        // Transactions, Get Only
-        // Add a reference to collection of transactions
-        transactions: {
-            collection: 'transaction',
-            via: 'customer'
-        },
-
-
-        // Account Information
-        email: {
-            type: "email",
-            required: true,
-            unique: true
-        },
-        password: {
-            type: "string",
-            minLength: 6,
-            protected: true,
-            // required: true,
-            columnName: "encryptedPassword"
-        },
-
         activated: {
-            type: "boolean",
-            defaultsTo: false
+            type: 'boolean',
+            required: true,
+            defaultsTo: true
         },
 
-        date_activated: {
-            type: "date"
-        },
 
         toJSON: function () {
             var obj = this.toObject();
@@ -195,7 +94,7 @@ module.exports = {
     //         cb();
     //     });
     // },
-    
+
 
     comparePassword: function (password, user) {
         return new Promise(function (resolve, reject) {
@@ -214,18 +113,18 @@ module.exports = {
     beforeCreate: function (attrs, cb) {
         bcrypt.hash(attrs.password, SALT_WORK_FACTOR, function (err, hash) {
           attrs.password = hash;
-          return cb();    
+          return cb();
         });
       },
-    
+
       beforeUpdate: function (attrs, cb) {
         if(attrs.newPassword){
           bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
             if (err) return cb(err);
-    
+
             bcrypt.hash(attrs.newPassword, salt, function(err, crypted) {
               if(err) return cb(err);
-    
+
               delete attrs.newPassword;
               attrs.password = crypted;
               return cb();
